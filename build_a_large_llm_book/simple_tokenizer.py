@@ -20,7 +20,8 @@ class GenerateVocab:
         preprocessed = [item.strip() for item in preprocessed if item.strip()]
          
         #sort and output size
-        all_words = sorted(set(preprocessed))
+        all_words = sorted(list(set(preprocessed)))
+        all_words.extend(["<|endoftext|>", "<|unk|>"])
         
         #generate token list
         self.vocab = {token:integer for integer,token in enumerate(all_words)}
@@ -28,7 +29,7 @@ class GenerateVocab:
     def get_vocab(self):
        return self.vocab
         
-class SimpleTokenizerV1:
+class SimpleTokenizer:
     """ Simple Text Tokenizer """
 
     def __init__(self, vocab):
@@ -37,26 +38,43 @@ class SimpleTokenizerV1:
 
 
     def encode(self, text):
-        preprocessed = re.split(r'([,.?_!"()\']|--|\s)', text)
+        preprocessed = re.split(r'([,.:;?_!"()\']|--|\s)', text)
         preprocessed = [
             item.strip() for item in preprocessed if item.strip()
         ]
+
+        preprocessed = [item if item in self.str_to_int
+                        else "<|unk|>" for item in preprocessed]
+
         ids = [self.str_to_int[s] for s in preprocessed]
         return ids
 
 
     def decode(self, ids):
         text = " ".join([self.int_to_str[i] for i in ids])
-        text = re.sub(r'\s+([,.?!"()\'])', r'\1', text)
+        text = re.sub(r'\s+([,.:;?_!"()\'])', r'\1', text)
         return text 
 
 vocab = GenerateVocab()
 vocab = vocab.get_vocab()
-tokenizer = SimpleTokenizerV1(vocab)
+tokenizer = SimpleTokenizer(vocab)
+
+print("EXAMPLE 1 ENCODED: ")
 text = """It's the last thing he painted, you know,"
        Mrs. Gisburn said with pardonable pride."""
 ids = tokenizer.encode(text)
 print(ids) 
 
+print("EXAMPLE 1 DECODED: ")
 print(tokenizer.decode(ids))
 
+text2 = "Hello, do you like tea?"
+text3 = "In the sunlit terraces of the palace."
+text4 = "<|endoftext|> ".join((text2, text3))
+
+print("EXAMPLE 2 ENCODED: ")
+ids2 = tokenizer.encode(text4)
+print(ids2)
+
+print("EXAMPLE 2 DECODED: ")
+print(tokenizer.decode(ids2))
