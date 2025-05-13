@@ -15,3 +15,11 @@ print (integers)
 
 strings = tokenizer.decode(integers)
 print(strings)
+
+with open("the-verdict.txt", "r", encoding="utf-8") as f:
+    raw_text = f.read()
+
+enc_text = tokenizer.encode(raw_text)
+print(len(enc_text))
+
+enc_sample = enc_text[50:]
