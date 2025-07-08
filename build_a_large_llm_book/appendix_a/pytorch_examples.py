@@ -38,6 +38,19 @@ print ("---------")
 
 print ("Using view command to reshape tensor")
 print (tensor2d.view(3,2))
+print ("---------")
+
+print ("Tensor transposition using T")
+print (tensor2d.T)
+print ("---------")
+
+print ("Matrix multiplication using matmul")
+print (tensor2d.matmul(tensor2d.T))
+print ("---------")
+
+print ("Matrix multiplication using @")
+print (tensor2d @ tensor2d.T)
+
 
 
 
