@@ -38,7 +38,10 @@ print (model.layers[0].weight.shape)
 print ("Bias")
 print (model.layers[0].bias.shape)
 
-
+print ("Example of manual_seed for output layers")
+torch.manual_seed(123)
+model = NeuralNetwork(50, 3)
+print(model.layers[0].weight)
 
 
 
