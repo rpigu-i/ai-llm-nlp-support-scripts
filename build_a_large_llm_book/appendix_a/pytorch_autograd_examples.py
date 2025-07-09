@@ -16,3 +16,6 @@ loss = F.binary_cross_entropy(a, y)
 
 print ("Loss is:")
 print (loss)
+
+print ("Computational graph:")
+print ("w1 (x) x1 -> [u = w1 (x) x1] -> (+ b) -> [z = u + b] -> [a = sigma(z)] -> [loss = L(a,y)]") 
