@@ -41,8 +41,23 @@ print (model.layers[0].bias.shape)
 print ("Example of manual_seed for output layers")
 torch.manual_seed(123)
 model = NeuralNetwork(50, 3)
-print(model.layers[0].weight)
+print (model.layers[0].weight)
 
+print ("Forward pass example")
+torch.manual_seed(123)
+X = torch.rand((1, 50))
+out = model (X)
+print (out)
 
+print ("Inference example")
+with torch.no_grad():
+    out = model(X)
+print (out)
 
+print ("Output last layer/logits without activation")
+print ("class-membership probabilities for our predictions via softmax")
+
+with torch.no_grad():
+    out = torch.softmax(model(X), dim=1)
+print (out)
 
