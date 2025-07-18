@@ -106,3 +106,21 @@ for epoch in range (num_epochs):
     model.eval()
 
 
+model.eval()
+with torch.no_grad():
+    outputs = model(x_train) 
+print(outputs)
+
+torch.set_printoptions(sci_mode=False)
+probas = torch.softmax(outputs, dim=1)
+print (probas)
+
+predictions = torch.argmax(probas, dim=1)
+print(predictions)
+
+predictions = torch.argmax(outputs, dim=1)
+print(predictions)
+
+print(predictions == y_train)
+
+print (torch.sum(predictions == y_train))
