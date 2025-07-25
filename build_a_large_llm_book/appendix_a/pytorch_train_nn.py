@@ -129,19 +129,21 @@ for epoch in range (num_epochs):
 model.eval()
 with torch.no_grad():
     outputs = model(x_train) 
-print(outputs)
+print (outputs)
 
 torch.set_printoptions(sci_mode=False)
 probas = torch.softmax(outputs, dim=1)
 print (probas)
 
 predictions = torch.argmax(probas, dim=1)
-print(predictions)
+print ("Predictions - probas:")
+print (predictions)
 
 predictions = torch.argmax(outputs, dim=1)
-print(predictions)
+print ("Predictions - outputs:")
+print (predictions)
 
-print(predictions == y_train)
+print (predictions == y_train)
 
 print (torch.sum(predictions == y_train))
 
@@ -150,3 +152,10 @@ print (compute_accuracy(model, train_loader))
 
 print ("Compute test loader accuracy")
 print (compute_accuracy(model, test_loader))
+
+print ("Save model example - model layer to weights and biases mapping saved to .pth file")
+torch.save(model.state_dict(), "model.pth")
+
+
+
+
