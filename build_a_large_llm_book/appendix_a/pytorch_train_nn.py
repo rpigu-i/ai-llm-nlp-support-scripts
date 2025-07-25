@@ -26,6 +26,38 @@ class NeuralNetwork(torch.nn.Module):
         logits = self.layers(x)
         return logits
 
+class ToyDataset(Dataset):
+    def __init__(self, x, y):
+        self.features = x
+        self.labels = y
+
+    def __getitem__(self, index):
+        one_x = self.features[index]
+        one_y = self.labels[index]
+        return one_x, one_y
+
+    def __len__(self):
+        return self.labels.shape[0]
+
+
+def compute_accuracy(model, dataloader):
+    model = model.eval()
+    correct = 0.0 
+    total_examples = 0
+
+    for idx, (features, labels) in enumerate (dataloader):
+    
+        with torch.no_grad():
+            logits = model(features)
+        
+        predictions = torch.argmax(logits, dim=1)
+        compare = labels == predictions 
+        correct += torch.sum(compare)
+        total_examples += len(compare)
+
+    return (correct / total_examples).item()  
+
+
 x_train = torch.tensor([
     [-1.2, 3.1],
     [-0.9, 2.9],
@@ -45,18 +77,6 @@ y_test = torch.tensor([0,1])
 
 torch.manual_seed(123)
 
-class ToyDataset(Dataset):
-    def __init__(self, x, y):
-        self.features = x
-        self.labels = y
-
-    def __getitem__(self, index):
-        one_x = self.features[index]
-        one_y = self.labels[index]
-        return one_x, one_y
-
-    def __len__(self):
-        return self.labels.shape[0]
 
 train_ds = ToyDataset(x_train, y_train)
 test_ds = ToyDataset(x_test, y_test)
@@ -70,7 +90,7 @@ train_loader = DataLoader(
     drop_last=True
 )
 
-test_laoder = DataLoader(
+test_loader = DataLoader(
     dataset=test_ds,
     batch_size=2,
     shuffle=False,
@@ -124,3 +144,9 @@ print(predictions)
 print(predictions == y_train)
 
 print (torch.sum(predictions == y_train))
+
+print ("Compute train loader accuracy")
+print (compute_accuracy(model, train_loader))
+
+print ("Compute test loader accuracy")
+print (compute_accuracy(model, test_loader))
