@@ -77,7 +77,6 @@ y_test = torch.tensor([0,1])
 
 torch.manual_seed(123)
 
-
 train_ds = ToyDataset(x_train, y_train)
 test_ds = ToyDataset(x_test, y_test)
 
@@ -97,9 +96,12 @@ test_loader = DataLoader(
     num_workers=0
 )
 
+print ("-------------------------")
+
 for idx, (x, y) in enumerate(train_loader):
     print(f"Batch {idx+1}:", x, y)
 
+print ("-------------------------")
 
 model = NeuralNetwork(num_inputs=2, num_outputs=2)
 optimizer = torch.optim.SGD(
@@ -125,44 +127,54 @@ for epoch in range (num_epochs):
 
     model.eval()
 
+print ("-------------------------")
 
 model.eval()
 with torch.no_grad():
     outputs = model(x_train) 
 print (outputs)
 
+print ("-------------------------")
 torch.set_printoptions(sci_mode=False)
 probas = torch.softmax(outputs, dim=1)
 print (probas)
 
+print ("-------------------------")
 predictions = torch.argmax(probas, dim=1)
 print ("Predictions - probas:")
 print (predictions)
 
+
+print ("-------------------------")
+
 predictions = torch.argmax(outputs, dim=1)
 print ("Predictions - outputs:")
 print (predictions)
-
 print (predictions == y_train)
-
 print (torch.sum(predictions == y_train))
 
+print ("-------------------------")
 print ("Compute train loader accuracy")
 print (compute_accuracy(model, train_loader))
 
+print ("-------------------------")
 print ("Compute test loader accuracy")
 print (compute_accuracy(model, test_loader))
 
+print ("-------------------------")
 print ("Save model example - model layer to weights and biases mapping saved to .pth file")
 torch.save(model.state_dict(), "model.pth")
 
+print ("-------------------------")
 print ("Example loading the model from disk")
 model = NeuralNetwork(2, 2)
 model.load_state_dict(torch.load("model.pth"))
 
+print ("-------------------------")
 print ("Check if GPU support is available")
 print (torch.cuda.is_available())
 
+print ("-------------------------")
 print ("Some example of using GPU support")
 
 tensor_1 = torch.tensor([1.,2.,3.])
