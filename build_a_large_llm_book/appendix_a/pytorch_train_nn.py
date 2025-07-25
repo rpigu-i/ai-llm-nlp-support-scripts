@@ -160,6 +160,16 @@ print ("Example loading the model from disk")
 model = NeuralNetwork(2, 2)
 model.load_state_dict(torch.load("model.pth"))
 
+print ("Check if GPU support is available")
+print (torch.cuda.is_available())
+
+print ("Some example of using GPU support")
+
+tensor_1 = torch.tensor([1.,2.,3.])
+tensor_2 = torch.tensor([4.,5.,6.])
+print ("Adding tensors example")
+print (tensor_1 + tensor_2)
+
 
 
 
