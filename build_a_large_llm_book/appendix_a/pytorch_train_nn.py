@@ -173,6 +173,7 @@ model.load_state_dict(torch.load("model.pth"))
 print ("-------------------------")
 print ("Check if GPU support is available")
 print (torch.cuda.is_available())
+print (" If CUDA is not supported, some of the following examples will not work!")
 
 print ("-------------------------")
 print ("Some example of using GPU support")
@@ -182,6 +183,12 @@ tensor_2 = torch.tensor([4.,5.,6.])
 print ("Adding tensors example")
 print (tensor_1 + tensor_2)
 
-
+if torch.cuda.is_available():
+    tensor_1 = tensor_1.to("cuda")
+    tensor_2 = tensor_2.to("cuda")
+    print ("CUDA support available: Adding tensors with CUDA example")
+    print (tensor_1 + tensor_2)
+else:
+    print ("No CUDA support available for this second adding example")
 
 
