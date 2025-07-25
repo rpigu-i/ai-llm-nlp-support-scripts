@@ -156,6 +156,10 @@ print (compute_accuracy(model, test_loader))
 print ("Save model example - model layer to weights and biases mapping saved to .pth file")
 torch.save(model.state_dict(), "model.pth")
 
+print ("Example loading the model from disk")
+model = NeuralNetwork(2, 2)
+model.load_state_dict(torch.load("model.pth"))
+
 
 
 
