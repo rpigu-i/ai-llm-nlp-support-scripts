@@ -104,15 +104,31 @@ for idx, (x, y) in enumerate(train_loader):
 print ("-------------------------")
 
 model = NeuralNetwork(num_inputs=2, num_outputs=2)
+torch.set_default_device("cpu")
 optimizer = torch.optim.SGD(
     model.parameters(), lr=0.5
 )
 
+
+print ("Check if a Mac with MPS support")
+mps = torch.backends.mps.is_available()
+print (mps)
+
+
+if mps:
+    device = torch.device("mps")
+else:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+model.to(device)    
+
+
 num_epochs = 3
 for epoch in range (num_epochs):
     model.train()
-    
+
     for batch_idx, (features, labels) in enumerate(train_loader):
+        features, labels = features.to(device), labels.to(device)
         logits = model(features)
         loss = F.cross_entropy(logits, labels)
 
@@ -188,7 +204,14 @@ if torch.cuda.is_available():
     tensor_2 = tensor_2.to("cuda")
     print ("CUDA support available: Adding tensors with CUDA example")
     print (tensor_1 + tensor_2)
+    print ("-----------")
+    print ("Example throwing a device error")
+    tensor_1 = tensor_1.to("cpu")
+    print (tensor_1 + tensor_2)
 else:
     print ("No CUDA support available for this second adding example")
+
+
+
 
 
