@@ -40,12 +40,13 @@ class ToyDataset(Dataset):
         return self.labels.shape[0]
 
 
-def compute_accuracy(model, dataloader):
+def compute_accuracy(model, dataloader, device):
     model = model.eval()
     correct = 0.0 
     total_examples = 0
 
     for idx, (features, labels) in enumerate (dataloader):
+        features, labels = features.to(device), labels.to(device)
     
         with torch.no_grad():
             logits = model(features)
@@ -147,7 +148,7 @@ print ("-------------------------")
 
 model.eval()
 with torch.no_grad():
-    outputs = model(x_train) 
+    outputs = model(x_train.to(device)) 
 print (outputs)
 
 print ("-------------------------")
@@ -166,16 +167,16 @@ print ("-------------------------")
 predictions = torch.argmax(outputs, dim=1)
 print ("Predictions - outputs:")
 print (predictions)
-print (predictions == y_train)
-print (torch.sum(predictions == y_train))
+print (predictions == y_train.to(device))
+print (torch.sum(predictions == y_train.to(device)))
 
 print ("-------------------------")
 print ("Compute train loader accuracy")
-print (compute_accuracy(model, train_loader))
+print (compute_accuracy(model, train_loader, device))
 
 print ("-------------------------")
 print ("Compute test loader accuracy")
-print (compute_accuracy(model, test_loader))
+print (compute_accuracy(model, test_loader, device))
 
 print ("-------------------------")
 print ("Save model example - model layer to weights and biases mapping saved to .pth file")
@@ -183,8 +184,9 @@ torch.save(model.state_dict(), "model.pth")
 
 print ("-------------------------")
 print ("Example loading the model from disk")
-model = NeuralNetwork(2, 2)
-model.load_state_dict(torch.load("model.pth"))
+loaded_model = NeuralNetwork(2, 2)
+loaded_model.load_state_dict(torch.load("model.pth"))
+loaded_model.to(device)
 
 print ("-------------------------")
 print ("Check if GPU support is available")
