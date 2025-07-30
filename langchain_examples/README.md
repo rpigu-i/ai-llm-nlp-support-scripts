@@ -1,6 +1,6 @@
 # LangChain Examples
 
-LangChain example are broken out into two groups:
+LangChain examples are broken out into two groups:
 
 1. AWS 
 2. OpenAI
@@ -21,4 +21,15 @@ Remember to then set the API Key in your environment, for example on the Mac:
 
 `export OPENAI_API_KEY="your_openai_api_key_here"`
 
- 
+## LangGraph Examples
+
+In order to leverage the tracing feature, you will need to setup a LangGraph account.
+
+Once complete, navigate to the Tracing project in the leftb hand menu and start a new one, then:
+
+1. Generate a new API Key using the button on the Set up observability window
+
+2. Set the Project Name e.g. `LangGraphExample`
+
+3. Copy the environment variables, and `export` them. Be careful not to blow away your existing `OPENAI_API_KEY` you set already 
+
