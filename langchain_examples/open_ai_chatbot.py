@@ -20,6 +20,15 @@ def call_model(state: MessagesState):
     return {"messages": response}
 
 
+# Output a query result
+
+def output_query(query, config):
+    input_messages = [HumanMessage(query)]
+    output = app.invoke({"messages": input_messages}, config)
+    output["messages"][-1].pretty_print()
+
+
+
 print ("Simple Open AI Chat example with LangGraph")
 llm = ChatOpenAI()
 llm.invoke("Hello, world!")
@@ -57,14 +66,20 @@ app = workflow.compile(checkpointer=memory)
 config = {"configurable": {"thread_id": "abc123"}}
 
 query = "Hi! I'm Bob."
+output_query(query, config)
 
-input_messages = [HumanMessage(query)]
-output = app.invoke({"messages": input_messages}, config)
-output["messages"][-1].pretty_print() #output contains all messages in states
+query = "What's my name?"
+output_query(query, config)
 
+print ("Demonstration of switching threads")
 
+# New thread ID
+config = {"configurable": {"thread_id": "abc234"}}
+output_query(query, config)
 
+print ("Demonstration of swithcing back to original thread")
 
-
-
+# Switch back to our original thread ID
+config = {"configurable": {"thread_id": "abc123"}}
+output_query(query, config)
 
