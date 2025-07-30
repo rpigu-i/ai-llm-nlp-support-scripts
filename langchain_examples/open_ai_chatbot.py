@@ -2,6 +2,7 @@ import getpass
 import os
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import HumanMessage
+from langchain_core.messages import AIMessage
 
 if not os.environ.get("OPENAI_API_KEY"):
   os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter API key for OpenAI: ")
@@ -14,4 +15,14 @@ print (response.content)
 
 print ("Demonstration of lack of state")
 response = model.invoke([HumanMessage(content="What's my name?")])
+print (response.content)
+
+print ("Example passing conversation history")
+response = model.invoke(
+    [
+        HumanMessage(content="Hi! I'm Bob"),
+        AIMessage(content="Hello Bob! How can I assist you todat?"),
+        HumanMessage(content="What's my name?"),
+    ]
+)
 print (response.content)
