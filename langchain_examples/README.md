@@ -21,6 +21,13 @@ Remember to then set the API Key in your environment, for example on the Mac:
 
 `export OPENAI_API_KEY="your_openai_api_key_here"`
 
+If you plan to trace the results to LangGraph, also remember to set the tracing environemnt variable to true, and include your API key:
+
+```
+export LANGSMITH_TRACING="true"
+export LANGSMITH_API_KEY="..."
+```
+
 ## LangGraph Examples
 
 In order to leverage the tracing feature, you will need to setup a LangGraph account.
@@ -31,5 +38,5 @@ Once complete, navigate to the Tracing project in the leftb hand menu and start 
 
 2. Set the Project Name e.g. `LangGraphExample`
 
-3. Copy the environment variables, and `export` them. Be careful not to blow away your existing `OPENAI_API_KEY` you set already 
+3. Copy the environment variables, and `export` them. Be careful not to blow away your existing `OPENAI_API_KEY` you set already. Note, this should also include setting `LANGSMITH_TRACING` to true, and including your `LANGSMITH_API_KEY`. 
 
