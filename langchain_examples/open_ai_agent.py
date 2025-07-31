@@ -13,6 +13,11 @@ if not os.environ.get("TAVILY_API_KEY"):
 if not os.environ.get("OPENAI_API_KEY"):
     os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter API key for OpenAI: ")
 
+def agent_streamer(input_message, config):
+    for step in agent_executor.stream(
+        {"messages": [input_message]}, config, stream_mode="values"
+):
+        step["messages"][-1].pretty_print() 
 
 # Create a basic agent
 memory = MemorySaver()
@@ -21,16 +26,36 @@ search = TavilySearch(max_result=2)
 tools = [search]
 agent_executor = create_react_agent(model, tools, checkpointer=memory)
 
+# Start using the model
+print ("Start using the model")
+query = "Good morning"
+response = model.invoke([{"role": "user", "content": query}])
+output = response.text()
+print (output)
+
+# Enable the model for tool calling
+print ("Example with binding tools")
+model_with_tools = model.bind_tools(tools)
+query = "Good morning, again!"
+response = model_with_tools.invoke([{"role": "user", "content": query}])
+print (f"Message content: {response.text()}\n")
+print (f"Tool calls: {response.tool_calls}")
+
 
 # Use the agent
+print ("Basic example using the agent")
 config = {"configurable": {"thread_id": "abc123"}}
 input_message = {
     "role": "user",
     "content": "Hi, I'm Bob and I live in SF.",
 }
+agent_streamer(input_message, config)
 
-for step in agent_executor.stream(
-    {"messages": [input_message]}, config, stream_mode="values"
-):
-    step["messages"][-1].pretty_print()
+print ("Example asking the weather. This will run a search")
+input_message = {
+    "role": "user",
+    "content": "What's the weather where I live?",
+}
+agent_streamer(input_message, config)
+
 
