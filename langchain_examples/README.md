@@ -40,3 +40,23 @@ Once complete, navigate to the Tracing project in the leftb hand menu and start 
 
 3. Copy the environment variables, and `export` them. Be careful not to blow away your existing `OPENAI_API_KEY` you set already. Note, this should also include setting `LANGSMITH_TRACING` to true, and including your `LANGSMITH_API_KEY`. 
 
+## Agent Example
+
+The agent example uses Tavily to conduct searches on the Internet and process the data. In order to use the package, install it via pip
+
+```
+pip3 install -qU langchain-tavily
+```
+
+If you don't have a Tavily API key, you can create one here: https://auth.tavily.com/
+
+Once you have the key, remember to `export` it into your environment.
+
+
+
+
+
+
+
+
+
