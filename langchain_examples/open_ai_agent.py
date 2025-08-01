@@ -36,14 +36,22 @@ print (output)
 # Enable the model for tool calling
 print ("Example with binding tools")
 model_with_tools = model.bind_tools(tools)
+
 query = "Good morning, again!"
+response = model_with_tools.invoke([{"role": "user", "content": query}])
+print (f"Message content: {response.text()}\n")
+print (f"Tool calls: {response.tool_calls}")
+
+# Tool invocation
+print ("Example of how a tool can be invoked")
+query = "Search for the weather in SF"
 response = model_with_tools.invoke([{"role": "user", "content": query}])
 print (f"Message content: {response.text()}\n")
 print (f"Tool calls: {response.tool_calls}")
 
 
 # Use the agent
-print ("Basic example using the agent")
+print ("Basic example using the agent, bind_tools is handled under the hood")
 config = {"configurable": {"thread_id": "abc123"}}
 input_message = {
     "role": "user",
@@ -59,3 +67,18 @@ input_message = {
 agent_streamer(input_message, config)
 
 
+# Running the react agent
+input_message = {"role": "user", "content": "Hi!"}
+response = agent_executor.invoke({"messages": [input_message]}, config, stream_mode="values")
+
+for message in response["messages"]:
+    message.pretty_print()
+
+
+# Stream tokens
+print ("Streaming tokens from the search")
+for step, metadata in agent_executor.stream(
+    {"messages": [input_message]}, config, stream_mode="messages"
+):
+    if metadata["langgraph_node"] == "agent" and (text := step.text()):
+        print(text, end="|")
