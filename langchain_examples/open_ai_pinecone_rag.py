@@ -12,6 +12,7 @@ from langchain.chat_models import init_chat_model
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from pinecone import Pinecone
+from IPython.display import Image, display
 
 # Grab API Keys
 if not os.environ.get("OPENAI_API_KEY"):
@@ -61,13 +62,20 @@ loader = WebBaseLoader(
 )
 docs = loader.load()
 print ("Loaded doc")
-print (docs)
+print (docs[0].page_content[:500])
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000, 
+    chunk_overlap=200,
+    add_start_index=True
+)
 all_splits = text_splitter.split_documents(docs)
+print (f"Split blog post into {len(all_splits)} sub-documents.")
+
 
 # Index chunks
 _= vector_store.add_documents(documents=all_splits)
+print (_[:3])
 
 # Define prompt for question-answering
 # N.B. for non-US LangSmith endpoints, you may need to specify
@@ -80,9 +88,18 @@ graph_builder = StateGraph(State).add_sequence([retrieve, generate])
 graph_builder.add_edge(START, "retrieve")
 graph = graph_builder.compile()
 
+# Example message format
+example_messages = prompt.invoke(
+    {"context": "(context goes here)", "question": "(question goes here)"}
+).to_messages()
+
+assert len(example_messages) == 1
+print(example_messages[0].content)
+
 print ("Ask a question: What is Latent Variable Modeling?")
 response = graph.invoke({"question": "What is Latent Variable Modeling?"})
 print (response["answer"])
 
-
+# Display the control flow
+display(Image(graph.get_graph().draw_mermaid_png()))
 
