@@ -76,3 +76,7 @@ print ("Demonstration compute context vectors via Matrix Multiplication")
 all_context_vecs = attn_weights @ inputs
 print (all_context_vecs)
 
+print ("Check context vector z^2")
+print ("Previous 2nd context vector:", context_vec_2)
+
+
