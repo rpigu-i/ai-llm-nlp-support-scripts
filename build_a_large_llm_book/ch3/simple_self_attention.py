@@ -66,3 +66,8 @@ print ("Normalization example using Dim (dimenion)")
 attn_weights = torch.softmax(attn_scores, dim=-1)
 print (attn_weights)
 
+print ("Confirm rows add to 1")
+
+row_2_sum = sum ([0.1385, 0.2379, 0.2333, 0.1240, 0.1082, 0.1581])
+print ("Row 2 sum:", row_2_sum)
+print ("All row sums:", attn_weights.sum(dim=-1))
