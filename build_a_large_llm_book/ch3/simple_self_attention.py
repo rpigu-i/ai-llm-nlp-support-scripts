@@ -79,4 +79,25 @@ print (all_context_vecs)
 print ("Check context vector z^2")
 print ("Previous 2nd context vector:", context_vec_2)
 
+print ("Now some examples with weights")
+
+x_2 = inputs[1] # second inpout element 
+d_in = inputs.shape[1] # input embedding soze
+d_out = 2 # output embedding size 
+
+torch.manual_seed(123)
+W_query = torch.nn.Parameter(torch.rand(d_in, d_out), requires_grad=False)
+W_key =   torch.nn.Parameter(torch.rand(d_in, d_out), requires_grad=False)
+W_value = torch.nn.Parameter(torch.rand(d_in, d_out), requires_grad=False)
+
+query_2 = x_2 @ W_query
+key_2 = x_2 @ W_key
+value_2 = x_2 @ W_value
+print (query_2)
+
+keys = inputs @ W_key
+values = inputs @ W_value
+print ("keys.shape:", keys.shape)
+print ("values.shape:", values.shape)
+
 
