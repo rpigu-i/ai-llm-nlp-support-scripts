@@ -1,6 +1,7 @@
+import torch
 import torch.nn as nn
 
-class SelfAttention_v1(nn.Module)
+class SelfAttention_v1(nn.Module):
     """
     Example self attention mechanism
     """
@@ -16,7 +17,7 @@ class SelfAttention_v1(nn.Module)
         values = x @ self.W_value
         attn_scores = queries @ keys.T # omega
         attn_weights = torch.softmax(
-            attn_scores / leys.shape[-1]**0.5, dim=-1
+            attn_scores / keys.shape[-1]**0.5, dim=-1
         )
         context_vec = attn_weights @ values
         return context_vec
