@@ -100,4 +100,13 @@ values = inputs @ W_value
 print ("keys.shape:", keys.shape)
 print ("values.shape:", values.shape)
 
+# Compute attention score w22
+print ("Compute attention score for w2 unnormalized")
+keys_2 = keys[1]
+attn_score_22 = query_2.dot(keys_2)
+print (attn_score_22)
+
+print ("Attention scores via matrix multiplication")
+attn_scores_2 = query_2 @ keys.T
+print (attn_scores_2)
 
