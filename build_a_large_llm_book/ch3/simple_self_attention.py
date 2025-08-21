@@ -110,3 +110,10 @@ print ("Attention scores via matrix multiplication")
 attn_scores_2 = query_2 @ keys.T
 print (attn_scores_2)
 
+print ("Calculate attention weights")
+
+d_k = keys.shape[-1]
+attn_weights_2 = torch.softmax(attn_scores_2 / d_k**0.5, dim=-1)
+print (attn_weights_2)
+
+
