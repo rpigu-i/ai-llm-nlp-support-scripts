@@ -21,5 +21,11 @@ queries = sa_v2.W_query(inputs)
 keys = sa_v2.W_key(inputs)
 attn_scores = queries @ keys.T
 attn_weights = torch.softmax(attn_scores / keys.shape[-1]**0.5, dim=-1)
+
+print ("Attention weights")
 print (attn_weights)
 
+print ("Apply mask")
+context_length = attn_scores.shape[0]
+mask_simple = torch.tril(torch.ones(context_length, context_length))
+print (mask_simple) 
