@@ -44,4 +44,8 @@ print ("Apply softmax function")
 attn_weights = torch.softmax(masked / keys.shape[-1]**0.5, dim=1)
 print(attn_weights)
 
+print("Dropout example")
+torch.manual_seed(123)
+dropout = torch.nn.Dropout(0.5)
+print(dropout(attn_weights))
 
