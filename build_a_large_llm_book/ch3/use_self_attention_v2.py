@@ -29,3 +29,19 @@ print ("Apply mask")
 context_length = attn_scores.shape[0]
 mask_simple = torch.tril(torch.ones(context_length, context_length))
 print (mask_simple) 
+
+print ("Re-normalize")
+row_sums = mask_simple.sum(dim=-1, keepdim=True)
+masked_simple_norm = mask_simple / row_sums
+print (masked_simple_norm)
+
+print ("Efficent calculation of masked attention weights")
+mask = torch.triu(torch.ones(context_length, context_length), diagonal=-1)
+masked = attn_scores.masked_fill(mask.bool(), -torch.inf)
+print(masked)
+
+print ("Apply softmax function")
+attn_weights = torch.softmax(masked / keys.shape[-1]**0.5, dim=1)
+print(attn_weights)
+
+
